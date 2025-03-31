@@ -37,35 +37,50 @@
         <p class="text-center">No tienes mascotas.</p>
     {% endif %}
 
-        <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Eliminar</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
-                </div>
+<!-- Modal de confirmación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Eliminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Scripts de Bootstrap (necesarios para el modal) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Script para manejar la eliminación después de la confirmación
-        document.getElementById('confirmDeleteButton').addEventListener('click', function() {
-            document.getElementById('deleteForm').submit(); // Envía el formulario si el usuario confirma
+        document.addEventListener("DOMContentLoaded", function () {
+            let petIdToDelete = null;
+    
+            // Cuando se abre el modal, obtener el ID de la mascota
+            $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget); // Botón que activó el modal
+                petIdToDelete = button.data('pet-id'); // Obtener el ID de la mascota
+            });
+    
+            // Cuando se confirma la eliminación, enviar el formulario correcto
+            document.getElementById("confirmDeleteButton").addEventListener("click", function () {
+                if (petIdToDelete) {
+                    let form = document.getElementById("deletePetForm");
+                    form.action = `/delete_pet/${petIdToDelete}/`; // URL dinámica
+                    form.submit();
+                }
+            });
         });
     </script>
 

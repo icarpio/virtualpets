@@ -39,11 +39,9 @@ def pet_dashboard(request):
     return render(request, 'pets/pet_dashboard.html', {'pets': pets})
 
 def delete_pet(request, pet_id):
-    print(f"Intentando eliminar la mascota con ID: {pet_id}")  # 👈 Debug
-    pet = Pet.objects.get(id=pet_id)
+    pet = get_object_or_404(Pet, id=pet_id)  # Si no existe, lanza un error 404
     pet.delete()
     return redirect('pet_dashboard')
-
 
 def pet_detail(request, pet_id):
     pet = Pet.objects.get(id=pet_id)
