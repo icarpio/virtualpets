@@ -17,12 +17,15 @@
                             <p class="card-text">Hambre: {{ pet.hunger }}</p>
                             <p class="card-text">Energía: {{ pet.energy }}</p>
                             <p class="card-text">Felicidad: {{ pet.happiness }}</p>
+                            <!-- Contenedor para los botones alineados en línea -->
                             <div class="d-flex justify-content-between">
                                 <a href="{% url 'pet_detail' pet.id %}" class="btn btn-info btn-sm mb-2">Detalle</a>
-
-                                <form method="post" id="deletePetForm" style="display:none;">
+                                <!-- Botón de Eliminar -->
+                                <form method="post" action="{% url 'delete_pet' pet.id %}" style="display:inline;" id="deleteForm-{{ pet.id }}">
                                     {% csrf_token %}
-                                    <input type="hidden" name="pet_id" id="pet_id" value="">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ pet.id }})">
+                                        Eliminar
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -35,11 +38,11 @@
     {% endif %}
 
     <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Eliminar Mascota</h5>
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Eliminar</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -55,38 +58,30 @@
         </div>
     </div>
 
-    <!-- Formulario oculto para la eliminación -->
-    <form method="post" id="deletePetForm">
-        {% csrf_token %}
-    </form>
+    <!-- Scripts de Bootstrap (necesarios para el modal) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let currentPetId = null;
+        
+        // Función para confirmar la eliminación de una mascota específica
+        function confirmDelete(petId) {
+            currentPetId = petId;
+            $('#confirmDeleteModal').modal('show');
+        }
+        
+        // Evento para manejar la eliminación después de la confirmación
+        document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+            if (currentPetId !== null) {
+                document.getElementById('deleteForm-' + currentPetId).submit();
+            }
+            $('#confirmDeleteModal').modal('hide');
+        });
+    </script>
 
     <div class="text-center mt-4">
         <a href="{% url 'create_pet' %}" class="btn btn-success">Nueva Mascota</a>
     </div>
 </div>
-
-<!-- Scripts de Bootstrap (necesarios para el modal) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let petIdToDelete = null;
-    
-        // Capturar el ID de la mascota cuando se abre el modal
-        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-            let button = $(event.relatedTarget);
-            petIdToDelete = button.data('pet-id');
-        });
-    
-        // Enviar el formulario con la URL correcta cuando se confirme la eliminación
-        document.getElementById("confirmDeleteButton").addEventListener("click", function () {
-            if (petIdToDelete) {
-                let form = document.getElementById("deletePetForm");
-                form.action = `/delete_pet/${petIdToDelete}/`;  // URL dinámica
-                form.submit();  // Envía el formulario
-            }
-        });
-    });
-</script>
 {% endblock %}
