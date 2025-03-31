@@ -39,9 +39,14 @@ def pet_dashboard(request):
     return render(request, 'pets/pet_dashboard.html', {'pets': pets})
 
 def delete_pet(request, pet_id):
-    pet = get_object_or_404(Pet, id=pet_id)  # Si no existe, lanza un error 404
+    pet = get_object_or_404(Pet, id=pet_id)
+    
+    # Verificar si el usuario es el propietario de la mascota
+    if pet.user != request.user:
+        return HttpResponseForbidden("No puedes eliminar esta mascota.")
+    
     pet.delete()
-    return redirect('pet_dashboard')
+    return redirect('pet_dashboard')  # Redirige a la vista del panel de mascotas
 
 def pet_detail(request, pet_id):
     pet = Pet.objects.get(id=pet_id)

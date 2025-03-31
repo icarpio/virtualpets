@@ -20,11 +20,10 @@
                             <div class="d-flex justify-content-between">
                                 <a href="{% url 'pet_detail' pet.id %}" class="btn btn-info btn-sm mb-2">Detalle</a>
 
-                                <!-- Botón de eliminar que abre el modal con el ID de la mascota -->
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                                        data-target="#confirmDeleteModal" data-pet-id="{{ pet.id }}">
-                                    Eliminar
-                                </button>
+                                <form method="post" id="deletePetForm" style="display:none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="pet_id" id="pet_id" value="">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -73,19 +72,19 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let petIdToDelete = null;
-
+    
         // Capturar el ID de la mascota cuando se abre el modal
         $('#confirmDeleteModal').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget);
             petIdToDelete = button.data('pet-id');
         });
-
+    
         // Enviar el formulario con la URL correcta cuando se confirme la eliminación
         document.getElementById("confirmDeleteButton").addEventListener("click", function () {
             if (petIdToDelete) {
                 let form = document.getElementById("deletePetForm");
                 form.action = `/delete_pet/${petIdToDelete}/`;  // URL dinámica
-                form.submit();
+                form.submit();  // Envía el formulario
             }
         });
     });
