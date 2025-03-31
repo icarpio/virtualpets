@@ -84,7 +84,7 @@
         document.getElementById("confirmDeleteButton").addEventListener("click", function () {
             if (petIdToDelete) {
                 let form = document.getElementById("deletePetForm");
-                form.action = `/delete_pet/${petIdToDelete}/`;  // URL dinámica
+                form.action = `/pets/delete_pet/${petIdToDelete}/`;  // URL dinámica
                 form.submit();
             }
         });
