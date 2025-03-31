@@ -1,0 +1,76 @@
+{% extends "pets/base.html" %}
+
+{% block title %}Mis Mascotas{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Mis Mascotas</h1>
+    
+    {% if pets %}
+        <div class="row">
+            {% for pet in pets %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ pet.current_image }}" class="card-img-top" alt="Imagen de la mascota"style="max-width: 100%; height: 200px; object-fit: contain;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pet.name }} ({{ pet.pet_base.name }})</h5>
+                            <p class="card-text">Hambre: {{ pet.hunger }}</p>
+                            <p class="card-text">Energía: {{ pet.energy }}</p>
+                            <p class="card-text">Felicidad: {{ pet.happiness }}</p>
+                            <!-- Contenedor para los botones alineados en línea -->
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'pet_detail' pet.id %}" class="btn btn-info btn-sm mb-2">Detalle</a>
+                                <!-- Botón de Eliminar -->
+                            <form method="post" action="{% url 'delete_pet' pet.id %}" style="display:inline;" id="deleteForm">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal">
+                                    Eliminar
+                                </button>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No tienes mascotas.</p>
+    {% endif %}
+
+        <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Eliminar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap (necesarios para el modal) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Script para manejar la eliminación después de la confirmación
+        document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+            document.getElementById('deleteForm').submit(); // Envía el formulario si el usuario confirma
+        });
+    </script>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'create_pet' %}" class="btn btn-success">Nueva Mascota</a>
+    </div>
+</div>
+{% endblock %}
