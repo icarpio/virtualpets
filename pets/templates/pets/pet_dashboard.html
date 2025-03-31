@@ -38,7 +38,7 @@
     {% endif %}
 
 <!-- Modal de confirmación -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -65,21 +65,14 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let petIdToDelete = null;
-    
-            // Cuando se abre el modal, obtener el ID de la mascota
-            $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-                let button = $(event.relatedTarget); // Botón que activó el modal
-                petIdToDelete = button.data('pet-id'); // Obtener el ID de la mascota
+            let modal = document.getElementById("confirmDeleteModal");
+        
+            modal.addEventListener("show.bs.modal", function () {
+                modal.removeAttribute("inert"); // Habilitar elementos internos
             });
-    
-            // Cuando se confirma la eliminación, enviar el formulario correcto
-            document.getElementById("confirmDeleteButton").addEventListener("click", function () {
-                if (petIdToDelete) {
-                    let form = document.getElementById("deletePetForm");
-                    form.action = `/delete_pet/${petIdToDelete}/`; // URL dinámica
-                    form.submit();
-                }
+        
+            modal.addEventListener("hidden.bs.modal", function () {
+                modal.setAttribute("inert", "true"); // Deshabilitar elementos internos
             });
         });
     </script>
