@@ -39,10 +39,8 @@ def pet_dashboard(request):
     return render(request, 'pets/pet_dashboard.html', {'pets': pets})
 
 def delete_pet(request, pet_id):
+    print(f"Intentando eliminar la mascota con ID: {pet_id}")  # 👈 Debug
     pet = Pet.objects.get(id=pet_id)
-    if pet.user != request.user:
-        return HttpResponseForbidden("No puedes eliminar esta mascota.")
-    
     pet.delete()
     return redirect('pet_dashboard')
 
