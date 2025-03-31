@@ -1,6 +1,5 @@
 # Ignorar archivos de entorno
 .env
-Procfile
 
 # Configuración de entorno de Virtualenv y Pipenv
 env/
