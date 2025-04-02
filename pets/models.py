@@ -34,7 +34,6 @@ class Pet(models.Model):
                 self.last_interaction = now
                 self.save()
                 return "¡Tu mascota ha evolucionado a la etapa 1!"
-
         elif self.evolution_stage == 1 and self.hunger >= 90 and self.energy >= 90 and self.happiness >= 90:
             if self.last_interaction <= now - timedelta(hours=5):
                 self.evolution_stage = 2
@@ -42,7 +41,6 @@ class Pet(models.Model):
                 self.last_interaction = now
                 self.save()
                 return "¡Tu mascota ha evolucionado a la etapa 2!"
-
         return "No se cumplen los requisitos para evolucionar."
 
 
