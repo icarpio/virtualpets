@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
             // Si la imagen es estática (durmiendo), aplica una escala diferente
             if (petImageUrl.startsWith('/static/')) {
-                petImage.setScale(0.5);  // Escala más grande para imágenes estáticas
+                petImage.setScale(1.8);  // Escala más grande para imágenes estáticas
             } else {
                 petImage.setScale(1.7);  // Escala normal para imágenes dinámicas
                 // Volteo continuo de la imagen de la mascota
