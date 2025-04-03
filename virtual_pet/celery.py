@@ -35,6 +35,11 @@ app.conf.beat_schedule = {
         'schedule': crontab(minute='*/5'),  # Ejecución cada 10 minutos
         'args': (),  # Argumentos para la tarea
     },
+    'update_pet_state': {
+        'task': 'pets.tasks.update_pet_state',
+        'schedule': crontab(minute='*'),  # Ejecutar cada minuto
+        'args': (),  # Argumentos para la tarea
+    },
 }
 
 # Habilitar la autodetección de tareas

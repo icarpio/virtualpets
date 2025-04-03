@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.4, maximum-scale=0.4, user-scalable=no">
-    <title>{{ pet.id }}</title>
+    <title>{{ pet.name }}</title>
 
     <!-- Cargar la librería Phaser -->
     <script src="//cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
@@ -55,6 +55,7 @@
     <div class="container">
        
         <h1 class="text-center text-white">{{ pet.name }}</h1>
+        <br>
         <!-- Contenedor del juego -->
         <div id="game-container"
             data-pet-id="{{ pet.id }}"

@@ -24,4 +24,13 @@ def decrease_pet_values(self):
         pet.save()
 
 
+@shared_task
+def update_pet_state():
+    """Verifica si las mascotas deben recuperar energía o despertar después de 2 horas."""
+    pets = Pet.objects.filter(is_sleeping=True)
+    for pet in pets:
+        pet.update_energy()  # Recuperar energía o despertar
+        pet.save()
+
+
         

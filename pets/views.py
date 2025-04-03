@@ -86,11 +86,36 @@ def increase_happiness(request, pet_id):
     except Pet.DoesNotExist:
         return JsonResponse({'error': 'Pet not found'}, status=404)
 
+def sleep(request,pet_id):
+    try:
+        pet = Pet.objects.get(id=pet_id)
+        pet.sleep()  # Pone a la mascota a dormir
+        return JsonResponse({
+            'message': 'La mascota está descansando.',
+            'new_pet_image_url': pet.current_image  # Devolver la URL de la imagen actualizada
+        })
+    except Pet.DoesNotExist:
+        return JsonResponse({'error': 'Pet not found'}, status=404)
+
+def wake_up(request,pet_id):
+    try:
+        pet = Pet.objects.get(id=pet_id)
+        pet.wake_up()  # Despierta a la mascota
+        return JsonResponse({
+            'message': 'La mascota ha despertado y su energía ha sido restaurada.',
+            'new_pet_image_url': pet.current_image  # Devolver la URL de la imagen actualizada
+        })
+    except Pet.DoesNotExist:
+        return JsonResponse({'error': 'Pet not found'}, status=404)
+
 def image_proxy(request, image_url):
     # Obtén la imagen desde la URL externa
     response = requests.get(image_url)
     # Devuelve la imagen en la respuesta HTTP
     return HttpResponse(response.content, content_type="image/png")
+
+
+    
 
 
   
