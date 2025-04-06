@@ -58,13 +58,15 @@ class Pet(models.Model):
         self.energy = min(100, self.energy + 30)  # Recupera 30 de energía, pero no pasa de 100
          # Cambiar la imagen según la etapa de evolución
         if self.pet_base:  # Verificar si hay un PetBase asociado
-            if self.evolution_stage == 0:
-                self.current_image = self.pet_base.base_image  # Imagen base
-            elif self.evolution_stage == 1:
-                self.current_image = self.pet_base.evolution1_image  # Imagen de la evolución 1
-            elif self.evolution_stage == 2:
-                self.current_image = self.pet_base.evolution2_image  # Imagen de la evolución 2
+            if self.evolution_stage == 0 and self.pet_base.base_image:
+                self.current_image = self.pet_base.base_image
+            elif self.evolution_stage == 1 and self.pet_base.evolution1_image:
+                self.current_image = self.pet_base.evolution1_image
+            elif self.evolution_stage == 2 and self.pet_base.evolution2_image:
+                self.current_image = self.pet_base.evolution2_image
         self.sleep_time = None  # Borra el tiempo de sueño
+        print(f"[wake_up] pet_base: {self.pet_base}")
+        print(f"[wake_up] base_image: {self.pet_base.base_image if self.pet_base else 'No pet_base'}")
         self.save()
 
     def update_energy(self):
@@ -80,3 +82,5 @@ class Pet(models.Model):
                              
     def __str__(self):
         return self.name
+    
+    
