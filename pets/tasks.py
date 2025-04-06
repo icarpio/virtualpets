@@ -26,8 +26,10 @@ def decrease_pet_values(self):
 
 @shared_task
 def update_pet_state():
-    """Verifica si las mascotas deben recuperar energía o despertar después de 2 horas."""
-    pets = Pet.objects.filter(is_sleeping=True).select_related("pet_base") # Así te asegurás de que cuando se itere sobre las mascotas, ya venga el pet_base incluido (evita lazy loading problemático dentro de Celery):
+    """Verifica si las mascotas deben recuperar energía o despertar después de 2 horas.
+    # Así te asegurás de que cuando se itere sobre las mascotas, ya venga el pet_base incluido (evita lazy loading problemático dentro de Celery):"""
+    
+    pets = Pet.objects.filter(is_sleeping=True).select_related("pet_base") 
     for pet in pets:
         pet.update_energy()  # Recuperar energía o despertar
         pet.save()

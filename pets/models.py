@@ -73,7 +73,7 @@ class Pet(models.Model):
         """Recupera energía mientras la mascota duerme, hasta el máximo de 100."""
         if self.is_sleeping:
             # Si la mascota ha estado dormida por 2 horas o más, se despierta automáticamente
-            if timezone.now() >= self.sleep_time + timedelta(minutes=15):
+            if timezone.now() >= self.sleep_time + timedelta(hours=4):
                 self.wake_up()
             else:
                 # Recupera energía mientras duerme (pero no sobrepase 100)
