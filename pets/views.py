@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 import requests
 from django.http import HttpResponse
-
+from django.utils import timezone
 
 @login_required
 def create_pet(request):
@@ -33,10 +33,13 @@ def create_pet(request):
     pet_bases = PetBase.objects.all()
     return render(request, 'pets/create_pet.html', {'pet_bases': pet_bases})
 
-
 def pet_dashboard(request):
     pets = Pet.objects.filter(user=request.user)  # Obtener todas las mascotas asociadas al usuario
     return render(request, 'pets/pet_dashboard.html', {'pets': pets})
+
+def pet_detail(request, pet_id):
+    pet = Pet.objects.get(id=pet_id)
+    return render(request, 'pets/pet_detail.html', {'pet': pet})
 
 def delete_pet(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
@@ -48,9 +51,29 @@ def delete_pet(request, pet_id):
     pet.delete()
     return redirect('pet_dashboard')  # Redirige a la vista del panel de mascotas
 
-def pet_detail(request, pet_id):
-    pet = Pet.objects.get(id=pet_id)
-    return render(request, 'pets/pet_detail.html', {'pet': pet})
+#   PHASER FUNCTIONS
+
+def sleep_all_pets(request):
+    if request.method == 'POST':
+        # Filtrar las mascotas del usuario actual
+        pets = Pet.objects.filter(user=request.user)
+
+        # Iterar sobre cada mascota y llamamos a su método sleep
+        for pet in pets:
+            pet.sleep()  # Llama al método `sleep()` que actualiza la mascota
+
+    return redirect('pet_dashboard')
+
+def wake_up_all_pets(request):
+    if request.method == 'POST':
+        # Filtrar las mascotas del usuario actual
+        pets = Pet.objects.filter(user=request.user)
+
+        # Iterar sobre cada mascota y llamamos a su método wake_up
+        for pet in pets:
+            pet.wake_up()  # Llama al método `wake_up()` que actualiza la mascota
+
+    return redirect('pet_dashboard')
 
 
 def increase_hunger(request, pet_id):

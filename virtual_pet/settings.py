@@ -10,16 +10,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 REDIS_URL = os.environ.get('REDIS_URL')
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS')
-"""
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-"""
+
 
 
 # Application definition
@@ -92,6 +87,9 @@ CELERY_RESULT_BACKEND = REDIS_URL
 LOGIN_URL = 'login'  # Ruta para redirigir al login si no está autenticado
 LOGIN_REDIRECT_URL = 'pet_dashboard'  # Redirección tras el login
 LOGOUT_REDIRECT_URL = 'login'  # Redirección tras el logout
+
+
+SESSION_COOKIE_NAME = 'virtualpet_sessionid'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

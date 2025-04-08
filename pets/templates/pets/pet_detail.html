@@ -56,22 +56,27 @@
        
         <h1 class="text-center text-white">{{ pet.name }}</h1>
         <br>
-        <!-- Contenedor del juego -->
+        <!-- Contenedor del juego con datos de la mascota -->
         <div id="game-container"
-            data-pet-id="{{ pet.id }}"
-            data-pet-image="{{ pet.current_image }}"
-            data-hunger="{{ pet.hunger }}"
-            data-energy="{{ pet.energy }}"
-            data-happiness="{{ pet.happiness }}"
-            data-csrf="{{ csrf_token }}"
-            class="text-center">
-        </div>
+        data-pet-id="{{ pet.id }}"
+        data-pet-image="{{ pet.current_image }}"
+        data-hunger="{{ pet.hunger }}"
+        data-energy="{{ pet.energy }}"
+        data-happiness="{{ pet.happiness }}"
+        data-csrf="{{ csrf_token }}"
+        class="text-center">
+</div>
         <br>
         <a href="{% url 'pet_dashboard' %}" class="btn btn-primary">Mis mascotas</a>
        
     </div>
-
-    <script type="module" src="{% static 'js/pet_game.js' %}"></script>
+    
+    <!--<script type="module" src="{% static 'js/pet_game.js' %}"></script>-->
+    <!--<script type="module" src="{% static 'js/main.js?v=<?=Date.now() ?' %}"></script>-->
+    <script type="module" src="{% static 'js/p_t_game.js' %}"></script>
+    <script type="module" src="{% static 'js/pet_scene.js' %}"></script>
+    <script type="module" src="{% static 'js/minigame_scene.js' %}"></script>
+    
 </body>
 </html>
 

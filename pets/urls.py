@@ -12,5 +12,7 @@ urlpatterns = [
     path('image-proxy/<path:image_url>/', views.image_proxy, name='image_proxy'),
     path('sleep/<int:pet_id>/', views.sleep, name='sleep'),
     path('wake_up/<int:pet_id>/', views.wake_up, name='wake_up'),
+    path('sleep_all/', views.sleep_all_pets, name='sleep_all_pets'),
+    path('wake_up_all/', views.wake_up_all_pets, name='wake_up_all_pets'),
 ]
 

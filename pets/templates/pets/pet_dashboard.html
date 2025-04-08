@@ -4,8 +4,17 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Mis Mascotas</h1>
-    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Mis Mascotas</h1>
+        <form method="POST" action="{% url 'sleep_all_pets' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Dormir todas</button>
+        </form>
+        <form method="POST" action="{% url 'wake_up_all_pets' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Despertar todas</button>
+        </form>
+    </div>
     {% if pets %}
         <div class="row">
             {% for pet in pets %}
